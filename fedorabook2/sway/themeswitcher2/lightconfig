@@ -1,0 +1,262 @@
+#   set key variables   #
+set $mod Mod4
+set $left h
+set $down j
+set $up k
+set $right l
+
+#   set application variables   #
+#set $menu "~/.config/sway/bemenu/launcher.sh"
+set $menu "~/.config/sway/wofi/launcher.sh"
+set $term alacritty
+set $browser firefox
+set $incognito "firefox --private-window"
+set $start_music "~/.config/sway/start_music/starter.sh"
+set $lock "~/.config/sway/swaylock/launcher.sh"
+set $term2 foot
+set $menu2 "~/.config/rofi/launcher.sh"
+
+#   application shortcuts   #
+bindsym Alt+f exec $browser 
+bindsym Alt+i exec $incognito
+bindsym Alt+m exec $start_music
+bindsym Alt+t exec thunderbird
+bindsym Alt+n exec nemo
+bindsym Alt+v exec alacritty -e vim 
+bindsym Alt+u exec alacritty -t "fuzzy" -e ~/fuzzy.sh 
+bindsym Alt+l exec keepassxc --lock
+
+bindsym $mod+Return exec $term
+bindsym $mod+Shift+Return exec $term2
+bindsym Print exec $menu
+bindsym Menu exec $menu
+bindsym $mod+Print exec keepmenu
+bindsym $mod+Menu exec keepmenu
+
+#   reload the configuration file   #   
+bindsym $mod+Shift+c reload
+
+#Exit sway (logs you out of your Wayland session
+bindsym $mod+Shift+e exec swaynag -t warning -m 'You pressed the exit shorcut. Do you really want to exit sway? this will end your Wayland session.' -b 'Yes, exit sway' 'swaymsg exit'
+
+#   moving focus and focused windows    #
+bindsym $mod+$left focus left
+bindsym $mod+$down focus down
+bindsym $mod+$up focus up
+bindsym $mod+$right focus right
+
+bindsym $mod+Shift+$left move left
+bindsym $mod+Shift+$down move down
+bindsym $mod+Shift+$up move up
+bindsym $mod+Shift+$right move right
+
+#   workspaces  #
+set $work0 ""
+set $work1 "1:Writing"
+set $work2 "2:Terminal"
+set $work3 "3:Browser"
+set $work4 "4:Comms"
+set $work5 "5:Files"
+set $work6 "6:Media"
+set $work7 "7:Misc"
+set $work8 "8:Misc"
+set $work9 "9:Mixer"
+set $work10 "10:Audio"
+
+#   keybindings for workspaces  #
+bindsym $mod+grave workspace $work0
+bindsym $mod+1 workspace $work1
+bindsym $mod+2 workspace $work2
+bindsym $mod+3 workspace $work3
+bindsym $mod+4 workspace $work4
+bindsym $mod+5 workspace $work5
+bindsym $mod+6 workspace $work6
+bindsym $mod+7 workspace $work7
+bindsym $mod+8 workspace $work8
+bindsym $mod+9 workspace $work9
+bindsym $mod+0 workspace $work10
+
+
+bindsym $mod+Shift+grave move container to workspace $work0
+bindsym $mod+Shift+1 move container to workspace $work1
+bindsym $mod+Shift+2 move container to workspace $work2
+bindsym $mod+Shift+3 move container to workspace $work3
+bindsym $mod+Shift+4 move container to workspace $work4
+bindsym $mod+Shift+5 move container to workspace $work5
+bindsym $mod+Shift+6 move container to workspace $work6
+bindsym $mod+Shift+7 move container to workspace $work7
+bindsym $mod+Shift+8 move container to workspace $work8
+bindsym $mod+Shift+9 move container to workspace $work9
+bindsym $mod+Shift+0 move container to workspace $work10
+
+#   moving workspaces   #
+bindsym $mod+Shift+u move workspace output "'Hewlett Packard HP E231 6CM5050ZWY'"
+bindsym $mod+Shift+i move workspace output "'Hewlett Packard HP E231 6CM4431XGD'"
+bindsym $mod+Shift+o move workspace output "'Hewlett Packard HP E231 6CM5071CJJ'"
+
+#   layouts    #
+bindsym $mod+b splith
+bindsym $mod+v splitv
+bindsym $mod+s layout stacking
+bindsym $mod+w layout tabbed
+bindsym $mod+e layout toggle split
+bindsym $mod+f fullscreen
+bindsym $mod+Shift+space floating toggle
+floating_modifier $mod normal
+bindsym $mod+space focus mode_toggle
+bindsym $mod+a focus parent
+bindsym $mod+Shift+minus move scratchpad
+bindsym $mod+minus scratchpad show
+
+#   modes   #
+#   resize mode #
+mode "resize" {
+    bindsym $left resize shrink width 10px
+    bindsym $down resize grow height 10px
+    bindsym $up resize shrink height 10px
+    bindsym $right resize grow width 10px
+
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+}
+bindsym $mod+r mode "resize"
+
+#   display mode    #
+mode "displays" {
+    bindsym q exec "~/.config/sway/display_scripts/1-monitor.sh", mode "default"
+    bindsym w exec "~/.config/sway/display_scripts/3-monitor.sh", mode "default"
+    bindsym r exec "~/.config/sway/display_scripts/0-monitor.sh", mode "default"
+
+    bindsym a exec "/home/trevor/.config/sway/theme_switch/switcher.sh" light, mode "default"
+    bindsym s exec "/home/trevor/.config/sway/theme_switch/switcher.sh" dark, mode "default"
+
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+}
+bindsym $mod+d mode "displays"
+
+#   power mode  #
+mode "power" {
+    bindsym o exec keepassxc --lock && "/home/trevor/.config/sway/nwg-bar/power_ex.sh" poweroff, mode "default"
+    bindsym r exec keepassxc --lock && "/home/trevor/.config/sway/nwg-bar/power_ex.sh" reboot, mode "default"
+    bindsym h exec keepassxc --lock && "/home/trevor/.config/sway/nwg-bar/power_ex.sh" hibernate, mode "default"
+    bindsym s exec keepassxc --lock && "/home/trevor/.config/sway/nwg-bar/power_ex.sh" suspend, mode "default"
+
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+}
+bindsym $mod+p exec "~/.config/sway/nwg-bar/power.sh", mode "power"
+
+#   swaybar    #
+#bar {
+    #position bottom
+    ##status_command while date +'%Y-%m-%d %l:%M:%S %p'; do sleep 1; done
+    #status_command while date +'%m-%d-%Y %l:%M:%S %p'; do sleep 1; done
+#}
+
+exec_always waybar 
+exec_always killall waybar && sleep 1s && waybar
+
+#   Brightness Control   #
+#bindsym --locked XF86MonBrightnessUp exec xbacklight -inc 3
+#bindsym --locked XF86MonBrightnessDown exec xbacklight -dec 3
+bindsym --locked $mod+XF86MonBrightnessUp exec "/home/trevor/.config/sway/display_scripts/gammastep.sh" light
+bindsym --locked $mod+XF86MonBrightnessDown exec "/home/trevor/.config/sway/display_scripts/gammastep.sh" dark
+bindsym --locked alt+XF86MonBrightnessUp exec "/home/trevor/.config/sway/theme_switch/switcher.sh" light
+bindsym --locked alt+XF86MonBrightnessDown exec "/home/trevor/.config/sway/theme_switch/switcher.sh" dark
+
+#   Volume Control    #
+bindsym --locked XF86AudioRaiseVolume exec amixer -D pulse sset Master 2%+ unmute | sed -En 's/.*\[([0-9]+)%\].*/\1/p'
+bindsym --locked XF86AudioLowerVolume exec amixer -D pulse sset Master 2%- unmute | sed -En 's/.*\[([0-9]+)%\].*/\1/p'
+#bindsym --locked XF86AudioMute exec "~/.config/sway/sound/muting/toggle.sh"
+bindsym --locked XF86AudioMute exec amixer set Master toggle
+bindsym --locked XF86AudioPlay exec "~/.config/sway/sound/bluetooth\ control/xf86audio.sh toggle"
+bindsym --locked XF86AudioPrev exec "~/.config/sway/sound/bluetooth\ control/xf86audio.sh prev"
+bindsym --locked XF86AudioNext exec "~/.config/sway/sound/bluetooth\ control/xf86audio.sh next"
+bindsym --locked XF86AudioForward exec "~/.config/sway/sound/bluetooth\ control/xf86audio.sh forw"
+bindsym --locked XF86AudioRewind exec "~/.config/sway/sound/bluetooth\ control/xf86audio.sh back"
+bindsym --locked XF86AudioMicMute exec amixer set Capture toggle
+
+#his didn't work so here are mine
+#bindsym XF86AudioRaiseVolume exec "pactl set-sink-volume 0 +5%"
+#bindsym XF86AudioLowerVolume exec "pactl set-sink-volume 0 -5%"
+#bindsym XF86AudioMute exec "pactl set-sink-mute 0 toggle"
+
+#bindsym --locked XF86AudioRaiseVolume exec amixer -D pulse sset Master 2%+ unmute
+#bindsym --locked XF86AudioLowerVolume exec amixer -D pulse sset Master 2%- unmute
+#bindsym --locked XF86AudioMute exec "~/.config/sway/sound/muting/toggle.sh"
+#bindsym --locked Control_L+F11 exec "~/.config/sway/sound/bluetooth\ control/xf86audio.sh toggle"
+#bindsym --locked Control_L+F10 exec "~/.config/sway/sound/bluetooth\ control/xf86audio.sh prev"
+#bindsym --locked Control_L+F12 exec "~/.config/sway/sound/bluetooth\ control/xf86audio.sh next"
+
+bindsym --locked XF86MonBrightnessUp exec light -A 5
+bindsym --locked XF86MonBrightnessDown exec light -U 5
+
+
+#   pew pew making everything pretty    #
+gaps inner 15
+smart_gaps on
+default_border pixel 3
+popup_during_fullscreen smart
+
+#   didn't know where to keep this stuff    #
+workspace_auto_back_and_forth yes   
+exec "~/.config/sway/display_scripts/set-bg.sh" #   runs this on startup    
+bindsym $mod+Shift+q kill
+
+#   startup commands    #
+exec_always /usr/lib/kdeconnectd
+exec_always /usr/bin/syncthing 
+exec_always echo "power on" | bluetoothctl
+
+for_window [app_id="zenity"] floating enable
+
+#bindsym --locked XF86Favorites exec "~/.config/sway/sound/bluetooth\ control/xf86audio.sh" toggle
+bindsym --locked XF86Favorites exec playerctl play-pause
+bindsym XF86AudioPlay exec playerctl play-pause
+bindsym --locked Pause exec 
+bindsym XF86SelectiveScreenshot exec grim -g "$(slurp)"
+bindsym Alt+Print exec grim
+
+#######################################
+###                                 ### 
+###          NOTIFICATIONS          ### 
+###                                 ### 
+#######################################
+#
+#exec_always /usr/bin/mako --default-timeout 5000
+exec_always swaync
+bindsym XF86NotificationCenter exec swaync-client -t -sw
+bindsym $mod+Shift+n exec swaync-client -t -sw
+
+
+#set a background
+output "*" bg /home/trevor/Pictures/Wallpapers/darkarch03.png fill
+
+
+#set opacity
+#set $opacity 0.8
+#for_window [class=".*"] opacity $opacity
+#for_window [app_id=".*"] opacity $opacity
+for_window [app_id="foot"] opacity 0.8
+#for_window [app_id="firefox"] opacity 1
+
+
+
+input type:touchpad {
+    tap enabled
+}
+
+
+
+
+#swaylock
+bindsym $mod+Shift+x exec $lock
+#bindsym $mod+Shift+x exec swaylock -f --screenshots --effect-blur 10x3; sleep 4; swaymsg 'output * dpms off'; sleep 4; swaymsg 'output * dpms on'
+
+
+
+#reassigning caps lock
+input type:keyboard {
+    xkb_options Caps_Lock:Menu
+}

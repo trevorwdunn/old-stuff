@@ -1,0 +1,10 @@
+configuration {
+
+
+}
+
+@theme "launchpad"
+
+element {
+    children: [element-icon, element-text];
+}

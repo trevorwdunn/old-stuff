@@ -1,0 +1,150 @@
+"   Generic Autocmd
+autocmd BufWinLeave * if @% != '' | mkview!
+autocmd BufWinEnter * if @% != '' | silent loadview
+
+"   Generic Settings
+syntax on
+filetype plugin on
+set tabstop=4 softtabstop=4
+set encoding=utf-8
+set shiftwidth=4
+set expandtab
+set wildmenu
+set smartindent
+set relativenumber
+set smartcase
+set ignorecase
+set incsearch
+set nowrap
+set scrolloff=8
+set mouse=
+set foldmethod=manual
+
+"   Normal Maps
+nmap Y y$
+nmap L $
+nmap H 0
+nmap tt :tabnew<CR>
+nmap to :browse oldfiles<CR>
+nmap te :Texplore<CR>
+
+"   Leader Maps
+nmap \q za
+nmap \f :Fern . -drawer -reveal=% -toggle<CR>
+nmap \s :Files <CR>
+nmap \r :Rg <CR>
+
+"   Space Maps
+nmap <space>d :set background=dark <CR>
+nmap <space>l :set background=light <CR>
+nmap <space>m :set wrap! spell spelllang=en_us<CR>
+nmap <space>p :MarkdownPreview <CR>
+nmap <space>g :Goyo <CR>
+nmap <space>v :vsplit <CR>
+nmap <space>s :split <CR>
+nmap <space>x <C-w>x
+nmap <space>z :wqa <CR>
+nmap <space>w :wa <CR>
+nmap <space>b :call bible#insert_quote() <CR>
+nmap <space>s :call bible#search() <CR>
+nmap <space>s :call bible#search() <CR>
+nmap <space>c :w<CR>:!gcc %<CR><CR>:!clear && ./a.out<CR>
+
+function ReplaceDash() abort
+   :execute "normal! l\<C-v>t\|r-;l" 
+   :call ReplaceDash()
+endfunction
+nmap <space>t yyp0:call ReplaceDash()<CR>
+
+"   Maps
+map <C-l> :tabn<CR>
+map <C-h> :tabp<CR>
+nmap <C-k> i$$<ESC>ha
+imap <C-k> $$<ESC>ha
+map <C-s> :!sleep 2s && grim -g "$(slurp)" -t jpeg<CR>
+
+autocmd BufNewFile,BufRead *.csv set cursorline
+
+"   Markdown Settings/Autocmd
+autocmd BufWinLeave *.md | :! killall qutebrowser
+autocmd BufNewFile,BufRead *.md Goyo
+autocmd BufNewFile,BufRead *.md set filetype=markdown
+autocmd FileType markdown set cursorline
+autocmd FileType markdown set wrap
+autocmd FileType markdown set spell spelllang=en_us
+autocmd FileType markdown set linebreak
+autocmd FileType markdown set expandtab
+autocmd FileType markdown set tabstop=2
+autocmd FileType markdown set shiftwidth=2
+autocmd FileType markdown set scrolloff=12
+autocmd FileType markdown set conceallevel=2
+
+"   Plugins
+call plug#begin('~/.vim/plugged')
+    Plug 'godlygeek/tabular' | Plug 'plasticboy/vim-markdown'
+    Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': ['markdown', 'vim-plug']}
+    Plug 'junegunn/goyo.vim'
+    Plug 'lambdalisue/fern.vim'
+    Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+    Plug 'junegunn/fzf.vim'
+    Plug 'NLKNguyen/papercolor-theme'
+    Plug 'dbeniamine/todo.txt-vim'
+    Plug 'robertrosman/vim-bible'
+call plug#end()
+
+"Markdown Plugin Stuff
+let g:mkdp_browser = 'qutebrowser'
+let g:mkdp_auto_close = 1
+let g:vim_markdown_folding_disabled = 1
+let g:mkdp_preview_options = {
+    \ 'mkit': {},
+    \ 'katex': {},
+    \ 'uml': {},
+    \ 'maid': {},
+    \ 'disable_sync_scroll': 0,
+    \ 'sync_scroll_type': 'middle',
+    \ 'hide_yaml_meta': 1,
+    \ 'sequence_diagrams': {},
+    \ 'flowchart_diagrams': {},
+    \ 'content_editable': v:false,
+    \ 'disable_filename': 0
+    \ }
+
+"   fzf Maps
+let g:fzf_action = {
+  \ 'ctrl-t': 'tab split',
+  \ 'ctrl-s': 'split',
+  \ 'ctrl-v': 'vsplit' }
+
+"   Fern Maps
+function! s:init_fern() abort
+  nmap <buffer> o <Plug>(fern-action-open)
+  nmap <buffer> t <Plug>(fern-action-open:tabedit)gT
+  nmap <buffer> S <Plug>(fern-action-open:split)
+  nmap <buffer> V <Plug>(fern-action-open:vsplit)
+  nmap <buffer> n <Plug>(fern-action-new-path)
+  nmap <buffer> dd <Plug>(fern-action-remove)
+  nmap <buffer> m <Plug>(fern-action-move)
+  nmap <buffer> c <Plug>(fern-action-copy)
+endfunction
+
+augroup fern-custom
+  autocmd! *
+  autocmd FileType fern call s:init_fern()
+augroup END
+
+"   Todo Settings/Autocmd
+let g:TodoTxtForceDoneName='done.txt'
+autocmd BufNewFile,BufRead todo.txt Goyo
+
+"   Bible Settings
+let g:BibleFormat = "\\4 - \\1 \\2:\\3"
+let g:BibleTranslation = "NASB"
+
+colorscheme PaperColor
+
+set term=xterm-256color
+
+set background=dark
+set background=dark
+set background=light
